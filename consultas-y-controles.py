@@ -132,7 +132,7 @@ with col_fecha1:
 
 with col_fecha2:
     fecha_inf_preliminar = st.date_input(
-        "Fecha informe preliminar"
+        "Fecha envio informe preliminar"
     )
 
 with col_fecha3:
@@ -275,7 +275,14 @@ if st.button("🚀 Generar Reporte"):
             )
             st.dataframe(revision)
            
+            # =========================
+            # DETALLE INTERCONSULTAS VÁLIDAS
+            # =========================
            
+            detalle_interconsultas_validas = revision[
+                revision['Interconsulta_Valida'] > 0
+            ].copy()
+
            
 
 
@@ -339,6 +346,7 @@ if st.button("🚀 Generar Reporte"):
                         'Especialidad',
                         'Rut Funcionario',
                         'Funcionario',
+                        'Rut Paciente',
                         'Paciente',
                         'Fecha Atencion',
                         'Ic Asoc Hora'
@@ -367,6 +375,7 @@ if st.button("🚀 Generar Reporte"):
                         'Especialidad',
                         'Rut Funcionario',
                         'Funcionario',
+                        'Rut Paciente',
                         'Paciente',
                         'Fecha Atencion',
                         'Ic Asoc Hora'
@@ -515,7 +524,21 @@ if st.button("🚀 Generar Reporte"):
                     sheet_name='CONTROL_Detalle',
                     index=False
                 )
+                # =========================
+                # NUEVA HOJA:
+                # INTERCONSULTAS VÁLIDAS
+                # =========================
            
+                detalle_interconsultas_validas.to_excel(
+                    writer,
+                    sheet_name='INTERCONSULTAS_VALIDAS',
+                    index=False
+                )
+
+
+
+
+               
             # 🔥 CLAVE: mover puntero al inicio
             output.seek(0)
            
@@ -540,7 +563,7 @@ if st.button("🚀 Generar Reporte"):
                 'porc_escn_vs_consultas_nuevas': porc_escn_vs_consultas_nuevas,
                 'porc_escn_vs_controles': porc_escn_vs_total_controles,
                 'fecha_corte': fecha_corte_str,
-                'fecha_inf_preliminar': fecha_inf_preliminar_str,
+                'fecha_envio_preliminar': fecha_inf_preliminar_str,
                 'fecha_envio_informe_final': fecha_envio_informe_final_str,
                 'mes_corte': mes_corte,
             }
